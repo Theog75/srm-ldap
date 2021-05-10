@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"os/exec"
 	"srm-dhcp/config"
-	"srm-dhcp/kafkaproducer"
 	"strconv"
 	"time"
 )
@@ -18,6 +17,7 @@ func FileLoop() {
 	}
 }
 func LDAPReader() {
+	fmt.Println("Running command /usr/bin/ldapsearch  -h " + config.LDAPHOST + " -b " + config.LDAPBASEDN + "  -D '" + config.LDAPBINDDN + "' -w " + config.LDAPBINDPASSWORD + " s sub '(objectClass=computer)'")
 	out, err := exec.Command("/usr/bin/ldapsearch  -h " + config.LDAPHOST + " -b " + config.LDAPBASEDN + "  -D '" + config.LDAPBINDDN + "' -w " + config.LDAPBINDPASSWORD + " s sub '(objectClass=computer)'").Output()
 
 	if err != nil {
@@ -26,5 +26,5 @@ func LDAPReader() {
 		return
 	}
 	fmt.Println(out)
-	kafkaproducer.ProducerHandler(out)
+	// kafkaproducer.ProducerHandler(out)
 }
