@@ -22,6 +22,7 @@ func LDAPReader() {
 
 	if err != nil {
 		// log.Fatal(err)
+		fmt.Println(err)
 		fmt.Println("Could not read ldap content ... retrying...")
 		return
 	}
