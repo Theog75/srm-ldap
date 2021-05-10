@@ -11,6 +11,11 @@ const (
 	EnvDelay      = "DELAY"
 	EnvkafkaURL   = "KAFKAURL"
 	Envkafkatopic = "KAFKATOPIC"
+
+	EnvLDAPBINDDN       = "LDAPBINDDN"
+	EnvLDAPBINDPASSWORD = "LDAPBINDPASSWORD"
+	EnvLDAPBASEDN       = "LDAPBASEDN"
+	EnvLDAPHOST         = "LDAPHOST"
 )
 
 var (
@@ -19,6 +24,11 @@ var (
 	Delay      = ""
 	KafkaURL   = ""
 	KafkaTopic = ""
+
+	LDAPBINDDN       = ""
+	LDAPBINDPASSWORD = ""
+	LDAPBASEDN       = ""
+	LDAPHOST         = ""
 )
 
 func ReadEnv() {
@@ -27,6 +37,11 @@ func ReadEnv() {
 	Delay = GetEnv(EnvDelay, "10")
 	KafkaURL = GetEnv(EnvkafkaURL, "kafka-0.kafka")
 	KafkaTopic = GetEnv(Envkafkatopic, "collector.dhcp")
+
+	LDAPBINDDN = GetEnv(EnvLDAPBINDDN, "")
+	LDAPBINDPASSWORD = GetEnv(EnvLDAPBINDPASSWORD, "")
+	LDAPBASEDN = GetEnv(EnvLDAPBASEDN, "")
+	LDAPHOST = GetEnv(EnvLDAPHOST, "")
 
 }
 
