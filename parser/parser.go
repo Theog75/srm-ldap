@@ -20,6 +20,7 @@ func LDAPReader() {
 	fmt.Println("Running command /usr/bin/ldapsearch  -h " + config.LDAPHOST + " -b " + config.LDAPBASEDN + "  -D '" + config.LDAPBINDDN + "' -w " + config.LDAPBINDPASSWORD + " s sub '(objectClass=" + config.LDAPOBJCLASS + ")'")
 	cmd := "/usr/bin/ldapsearch"
 	args := " -h " + config.LDAPHOST + " -b " + config.LDAPBASEDN + "  -D '" + config.LDAPBINDDN + "' -w " + config.LDAPBINDPASSWORD + " s sub '(objectClass=" + config.LDAPOBJCLASS + ")'"
+	fmt.Println(cmd + " " + args)
 	out, err := exec.Command(cmd, args).Output()
 
 	if err != nil {
