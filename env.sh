@@ -5,3 +5,4 @@ export LDAPPORT=389
 export LDAPSSL=false
 export LDAPBINDDN="CN=bind ldap,CN=Users,DC=test,DC=local"
 export PORT="8086"
+export OBJCLASS="computer"
