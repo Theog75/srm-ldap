@@ -17,8 +17,9 @@ func FileLoop() {
 	}
 }
 func LDAPReader() {
-	fmt.Println("Running command /usr/bin/ldapsearch  -h " + config.LDAPHOST + " -b " + config.LDAPBASEDN + "  -D '" + config.LDAPBINDDN + "' -w " + config.LDAPBINDPASSWORD + " s sub '(objectClass" + config.LDAPOBJCLASS + ")'")
+	fmt.Println("Running command /usr/bin/ldapsearch  -h " + config.LDAPHOST + " -b " + config.LDAPBASEDN + "  -D '" + config.LDAPBINDDN + "' -w " + config.LDAPBINDPASSWORD + " s sub '(objectClass=" + config.LDAPOBJCLASS + ")'")
 	cmd := "/usr/bin/ldapsearch"
+	fmt.Println(config)
 	args := " -h " + config.LDAPHOST + " -b " + config.LDAPBASEDN + "  -D '" + config.LDAPBINDDN + "' -w " + config.LDAPBINDPASSWORD + " s sub '(objectClass=" + config.LDAPOBJCLASS + ")'"
 	out, err := exec.Command(cmd, args).Output()
 
