@@ -7,20 +7,19 @@ import (
 
 const (
 	EnvPort       = "PORT"
-	EnvFile       = "LOGFILE"
 	EnvDelay      = "DELAY"
-	EnvkafkaURL   = "KAFKAURL"
+	EnvkafkaURL   = "KAFKA_HOSTS"
 	Envkafkatopic = "KAFKATOPIC"
 
 	EnvLDAPBINDDN       = "LDAPBINDDN"
 	EnvLDAPBINDPASSWORD = "LDAPBINDPASSWORD"
 	EnvLDAPBASEDN       = "LDAPBASEDN"
 	EnvLDAPHOST         = "LDAPHOST"
+	EnvLDAPOBJCLASS		= "OBJ-CLASS"
 )
 
 var (
 	Port       = ""
-	File       = ""
 	Delay      = ""
 	KafkaURL   = ""
 	KafkaTopic = ""
@@ -29,19 +28,21 @@ var (
 	LDAPBINDPASSWORD = ""
 	LDAPBASEDN       = ""
 	LDAPHOST         = ""
+	LDAPOBJCLASS	 = ""
 )
 
 func ReadEnv() {
 	Port = GetEnv(EnvPort, "8080")
-	File = GetEnv(EnvFile, "DhcpSrvLog-Mon.log")
 	Delay = GetEnv(EnvDelay, "10")
 	KafkaURL = GetEnv(EnvkafkaURL, "kafka-0.kafka")
-	KafkaTopic = GetEnv(Envkafkatopic, "collector.dhcp")
+	KafkaTopic = GetEnv(Envkafkatopic, "")
 
 	LDAPBINDDN = GetEnv(EnvLDAPBINDDN, "")
 	LDAPBINDPASSWORD = GetEnv(EnvLDAPBINDPASSWORD, "")
 	LDAPBASEDN = GetEnv(EnvLDAPBASEDN, "")
 	LDAPHOST = GetEnv(EnvLDAPHOST, "")
+	LDAPOBJCLASS = GetEnv(LDAPOBJCLASS, "")
+
 
 }
 

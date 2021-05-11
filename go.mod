@@ -1,4 +1,4 @@
-module srm-dhcp
+module srm-ldap
 
 go 1.16
 

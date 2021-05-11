@@ -39,11 +39,13 @@ items:
       spec:
         containers:
         - env:
-          - name: LOGFILE
-            value: "DhcpSrvLog-Mon.log"
+          - name: KAFKATOPIC
+            value: "ldap_computer"
+          - name: OBJ-CLASS
+            value: "computer"
           - name: KAFKA_HOSTS
             value: kafka-0.kafka:9092,kafka-1.kafka:9092,kafka-2.kafka:9092
-          image: quay.io/ypery/srm-dhcp:v0.12
+          image: quay.io/ypery/srm-ldap:v0.12
           imagePullPolicy: Always
           name: collector-dhcp-file
           resources: {}
