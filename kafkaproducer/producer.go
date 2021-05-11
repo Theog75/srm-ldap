@@ -9,10 +9,10 @@ import (
 	kafka "github.com/segmentio/kafka-go"
 
 	"fmt"
-	"srm-dhcp/config"
+	"srm-ldap/config"
 )
 
-func ProducerHandler(ProduceMsg *config.Dhcp) {
+func ProducerHandler(ProduceMsg *config.ldap) {
 	// get kafka writer using environment variables.
 	kafkaURL := os.Getenv("kafkaURL")
 	topic := os.Getenv(config.KafkaURL)
