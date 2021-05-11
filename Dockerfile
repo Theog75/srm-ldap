@@ -1,6 +1,6 @@
 FROM debian
 
-RUN apt update -y
+RUN apt update -y && apt install -y ldap-utils
 COPY looper.sh /
 COPY srm-ldap /
 COPY run.sh /
