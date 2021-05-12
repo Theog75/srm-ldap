@@ -5,6 +5,7 @@ import (
 	"os/exec"
 	"regexp"
 	"srm-ldap/config"
+	"srm-ldap/kafkaproducer"
 	"strconv"
 	"time"
 )
@@ -29,6 +30,25 @@ func splitByEmptyNewline(str string) []string {
 
 }
 
+func reduceSliceSize(slcs []string) []string {
+	res := []string{}
+	combinedSlices := ""
+	for i, slc := range slcs {
+		if combinedSlices == "" {
+			combinedSlices += slc
+		} else {
+			combinedSlices += "\r\n\r\n" + slc
+		}
+
+		if i%1000 == 0 {
+			res = append(res, combinedSlices)
+			combinedSlices = ""
+		}
+	}
+
+	return res
+}
+
 func ldapReader() {
 	cmd := "/ldap-query.sh"
 	out, err := exec.Command(cmd).Output()
@@ -39,6 +59,8 @@ func ldapReader() {
 		fmt.Println("Could not read ldap content ... retrying...")
 		return
 	}
-	fmt.Println(string(out))
-	// kafkaproducer.ProducerHandler(out)
+	for _, s := range reduceSliceSize(splitByEmptyNewline(string(out))) {
+		kafkaproducer.ProducerHandler(s)
+
+	}
 }
