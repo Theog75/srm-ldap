@@ -17,11 +17,8 @@ func FileLoop() {
 	}
 }
 func LDAPReader() {
-	fmt.Println("Running command /usr/bin/ldapsearch  -h " + config.LDAPHOST + " -b " + config.LDAPBASEDN + "  -D '" + config.LDAPBINDDN + "' -w " + config.LDAPBINDPASSWORD + " s sub '(objectClass=" + config.LDAPOBJCLASS + ")'")
-	cmd := "/usr/bin/ldapsearch"
-	//args := " -h " + config.LDAPHOST + " -b " + config.LDAPBASEDN + "  -D '" + config.LDAPBINDDN + "' -w " + config.LDAPBINDPASSWORD + " s sub '(objectClass=" + config.LDAPOBJCLASS + ")'"
-	args := []string{" -h " + config.LDAPHOST, "-b " + config.LDAPBASEDN , " -D '" + config.LDAPBINDDN + "'", "-w " + config.LDAPBINDPASSWORD, " s sub '(objectClass=" + config.LDAPOBJCLASS + ")'"}
-	out, err := exec.Command(cmd, args...).Output()
+	cmd := "/ldap-query.sh"
+	out, err := exec.Command(cmd).Output()
 
 	if err != nil {
 		// log.Fatal(err)
@@ -29,6 +26,6 @@ func LDAPReader() {
 		fmt.Println("Could not read ldap content ... retrying...")
 		return
 	}
-	fmt.Println(out)
+	fmt.Printf("%s",out)
 	// kafkaproducer.ProducerHandler(out)
 }
