@@ -65,3 +65,88 @@ items:
         securityContext: {}
         terminationGracePeriodSeconds: 30
 
+- apiVersion: v1
+  kind: Secret
+  metadata:
+    name: ldapauth
+  type: kubernetes.io/basic-auth
+  stringData:
+    binddn: CN=bind ldap,CN=Users,DC=test,DC=local
+    ldaphost: 52.255.178.11
+    password: Aa123456 
+    basedn: CN=Users,DC=test,DC=local 
+
+- apiVersion: apps/v1
+  kind: Deployment
+  metadata:
+    labels:
+      app: collector
+    name: collector-ldap-computer
+  spec:
+    replicas: 1
+    selector:
+      matchLabels:
+        app: collector
+    template:
+      metadata:
+        labels:
+          app: collector
+      spec:
+        containers:
+        - env:
+          - name: KAFKA_HOSTS
+          - name: KAFKATOPIC
+            value: "ldap_computer"
+          - name: OBJ-CLASS
+            value: "computer"
+            value: kafka-0.kafka:9092,kafka-1.kafka:9092,kafka-2.kafka:9092
+          image: quay.io/ypery/collector_ldap_computer:vdev
+          imagePullPolicy: Always
+          name: collector-ldap-computer
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+          volumeMounts:
+          - name: ldapauth
+            mountPath: "/ldapauth"
+            readOnly: true
+        volumes:
+        - name: ldapauth
+          secret:
+            secretName: ldapauth
+        dnsPolicy: ClusterFirst
+        restartPolicy: Always
+        schedulerName: default-scheduler
+
+- apiVersion: apps/v1
+  kind: Deployment
+  metadata:
+    name: forwarder-udp-ldap-computer
+    labels:
+      app: forwarder
+  spec:
+    replicas: 1
+    selector:
+      matchLabels:
+        app: forwarder
+    template:
+      metadata:
+        labels:
+          app: forwarder
+      spec:
+        containers:
+          - name: forwarder-udp-ldap-computer
+            image: ${REG}/forwarder_udp_ldap_computer:v${TAG}
+            resources:
+              limits:
+                memory: 2Gi
+                cpu: 1
+              requests:
+                cpu: 500m
+                memory: 1Gi
+            env:
+            - name: UDP_HOST
+              value: 172.30.196.25
+            - name: UDP_PORT
+              value: "4445"
+            - name: KAFKA_HOSTS
+              value: kafka-0.kafka:9092,kafka-1.kafka:9092,kafka-2.kafka:9092

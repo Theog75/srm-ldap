@@ -11,9 +11,9 @@ import (
 )
 
 func LdapLoop() {
+	delaystr, _ := strconv.Atoi(config.Delay)
+	delay := time.Duration(delaystr)
 	for {
-		delaystr, _ := strconv.Atoi(config.Delay)
-		delay := time.Duration(delaystr)
 		ldapReader()
 		time.Sleep(delay * time.Second)
 	}
@@ -33,14 +33,14 @@ func splitByEmptyNewline(str string) []string {
 func reduceSliceSize(slcs []string) []string {
 	res := []string{}
 	combinedSlices := ""
-	for i, slc := range slcs {
-		if combinedSlices == "" {
-			combinedSlices += slc
-		} else {
-			combinedSlices += "\r\n\r\n" + slc
-		}
 
-		if i%1000 == 0 {
+	for index, slc := range slcs {
+		if combinedSlices != "" {
+			combinedSlices += "\r\n\r\n"
+		}
+		combinedSlices += slc
+
+		if index%1000 == 0 {
 			res = append(res, combinedSlices)
 			combinedSlices = ""
 		}
@@ -54,13 +54,12 @@ func ldapReader() {
 	out, err := exec.Command(cmd).Output()
 
 	if err != nil {
-		// log.Fatal(err)
 		fmt.Println(err)
 		fmt.Println("Could not read ldap content ... retrying...")
 		return
 	}
-	for _, s := range reduceSliceSize(splitByEmptyNewline(string(out))) {
-		kafkaproducer.ProducerHandler(s)
+	for _, msg := range reduceSliceSize(splitByEmptyNewline(string(out))) {
+		kafkaproducer.ProducerHandler(msg)
 
 	}
 }

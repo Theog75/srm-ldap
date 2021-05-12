@@ -15,7 +15,7 @@ const (
 	EnvLDAPBINDPASSWORD = "LDAPBINDPASSWORD"
 	EnvLDAPBASEDN       = "LDAPBASEDN"
 	EnvLDAPHOST         = "LDAPHOST"
-	EnvLDAPOBJCLASS		= "OBJCLASS"
+	EnvLDAPOBJCLASS     = "OBJCLASS"
 )
 
 var (
@@ -28,21 +28,20 @@ var (
 	LDAPBINDPASSWORD = ""
 	LDAPBASEDN       = ""
 	LDAPHOST         = ""
-	LDAPOBJCLASS	 = ""
+	LDAPOBJCLASS     = ""
 )
 
 func ReadEnv() {
 	Port = GetEnv(EnvPort, "8080")
 	Delay = GetEnv(EnvDelay, "10")
 	KafkaURL = GetEnv(EnvkafkaURL, "kafka-0.kafka")
-	KafkaTopic = GetEnv(Envkafkatopic, "")
+	KafkaTopic = "collector." + GetEnv(Envkafkatopic, "")
 
 	LDAPBINDDN = GetEnv(EnvLDAPBINDDN, "")
 	LDAPBINDPASSWORD = GetEnv(EnvLDAPBINDPASSWORD, "")
 	LDAPBASEDN = GetEnv(EnvLDAPBASEDN, "")
 	LDAPHOST = GetEnv(EnvLDAPHOST, "")
 	LDAPOBJCLASS = GetEnv(EnvLDAPOBJCLASS, "")
-
 
 }
 
