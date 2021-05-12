@@ -21,7 +21,7 @@ func main() {
 	quit := make(chan struct{})
 	defer close(quit)
 	config.ReadEnv()
-	go parser.FileLoop()
+	go parser.LdapLoop()
 
 	http.HandleFunc("/ping", instrumentation.Ping())
 	err := http.ListenAndServe(":"+config.Port, nil)
