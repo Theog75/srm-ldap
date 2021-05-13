@@ -2,9 +2,9 @@ package main
 
 import (
 	"fmt"
-	"srm-dhcp/config"
-	"srm-dhcp/instrumentation"
-	"srm-dhcp/parser"
+	"srm-ldap/config"
+	"srm-ldap/instrumentation"
+	"srm-ldap/parser"
 
 	"net/http"
 )
@@ -21,7 +21,7 @@ func main() {
 	quit := make(chan struct{})
 	defer close(quit)
 	config.ReadEnv()
-	go parser.FileLoop()
+	go parser.LdapLoop()
 
 	http.HandleFunc("/ping", instrumentation.Ping())
 	err := http.ListenAndServe(":"+config.Port, nil)

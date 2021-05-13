@@ -3,30 +3,63 @@ package parser
 import (
 	"fmt"
 	"os/exec"
-	"srm-dhcp/config"
+	"regexp"
+	"srm-ldap/config"
+	"srm-ldap/kafkaproducer"
 	"strconv"
 	"time"
 )
 
-func FileLoop() {
+func LdapLoop() {
+	delaystr, _ := strconv.Atoi(config.Delay)
+	delay := time.Duration(delaystr)
 	for {
-		delaystr, _ := strconv.Atoi(config.Delay)
-		delay := time.Duration(delaystr)
-		LDAPReader()
+		ldapReader()
 		time.Sleep(delay * time.Second)
 	}
 }
-func LDAPReader() {
-	fmt.Println("Running command /usr/bin/ldapsearch  -h " + config.LDAPHOST + " -b " + config.LDAPBASEDN + "  -D '" + config.LDAPBINDDN + "' -w " + config.LDAPBINDPASSWORD + " s sub '(objectClass=computer)'")
-	cmd := "/usr/bin/ldapsearch  -h " + config.LDAPHOST + " -b " + config.LDAPBASEDN + "  -D '" + config.LDAPBINDDN + "' -w " + config.LDAPBINDPASSWORD + " s sub '(objectClass=computer)'"
+
+func splitByEmptyNewline(str string) []string {
+	strNormalized := regexp.
+		MustCompile("\r\n").
+		ReplaceAllString(str, "\n")
+
+	return regexp.
+		MustCompile(`\n\s*\n`).
+		Split(strNormalized, -1)
+
+}
+
+func reduceSliceSize(slcs []string) []string {
+	res := []string{}
+	combinedSlices := ""
+
+	for index, slc := range slcs {
+		if combinedSlices != "" {
+			combinedSlices += "\r\n\r\n"
+		}
+		combinedSlices += slc
+
+		if index%1000 == 0 {
+			res = append(res, combinedSlices)
+			combinedSlices = ""
+		}
+	}
+
+	return res
+}
+
+func ldapReader() {
+	cmd := "/ldap-query.sh"
 	out, err := exec.Command(cmd).Output()
 
 	if err != nil {
-		// log.Fatal(err)
 		fmt.Println(err)
 		fmt.Println("Could not read ldap content ... retrying...")
 		return
 	}
-	fmt.Println(out)
-	// kafkaproducer.ProducerHandler(out)
+	for _, msg := range reduceSliceSize(splitByEmptyNewline(string(out))) {
+		kafkaproducer.ProducerHandler(msg)
+
+	}
 }

@@ -6,60 +6,85 @@ items:
 - apiVersion: v1
   kind: Secret
   metadata:
-    name: sambaauth
+    name: ldapauth
   type: kubernetes.io/basic-auth
   stringData:
-    share: Share01
-    server: 40.85.160.196
-    username: SMB-USER
+    binddn: CN=bind ldap,CN=Users,DC=test,DC=local
+    ldaphost: 52.255.178.11
     password: Aa123456 
+    basedn: CN=Users,DC=test,DC=local 
+
 - apiVersion: apps/v1
   kind: Deployment
   metadata:
     labels:
       app: collector
-    name: collector-dhcp-file
+    name: collector-ldap-computer
   spec:
-    progressDeadlineSeconds: 600
     replicas: 1
-    revisionHistoryLimit: 10
     selector:
       matchLabels:
         app: collector
-    strategy:
-      rollingUpdate:
-        maxSurge: 25%
-        maxUnavailable: 25%
-      type: RollingUpdate
     template:
       metadata:
-        creationTimestamp: null
         labels:
           app: collector
       spec:
         containers:
         - env:
-          - name: LOGFILE
-            value: "DhcpSrvLog-Mon.log"
           - name: KAFKA_HOSTS
+          - name: KAFKATOPIC
+            value: "ldap_computer"
+          - name: OBJ-CLASS
+            value: "computer"
             value: kafka-0.kafka:9092,kafka-1.kafka:9092,kafka-2.kafka:9092
-          image: quay.io/ypery/srm-dhcp:v0.12
+          image: quay.io/ypery/collector_ldap_computer:vdev
           imagePullPolicy: Always
-          name: collector-dhcp-file
-          resources: {}
+          name: collector-ldap-computer
           terminationMessagePath: /dev/termination-log
           terminationMessagePolicy: File
           volumeMounts:
-          - name: sambaauth
-            mountPath: "/sambaauth"
+          - name: ldapauth
+            mountPath: "/ldapauth"
             readOnly: true
         volumes:
-        - name: sambaauth
+        - name: ldapauth
           secret:
-            secretName: sambaauth
+            secretName: ldapauth
         dnsPolicy: ClusterFirst
         restartPolicy: Always
         schedulerName: default-scheduler
-        securityContext: {}
-        terminationGracePeriodSeconds: 30
 
+- apiVersion: apps/v1
+  kind: Deployment
+  metadata:
+    name: forwarder-udp-ldap-computer
+    labels:
+      app: forwarder
+  spec:
+    replicas: 1
+    selector:
+      matchLabels:
+        app: forwarder
+    template:
+      metadata:
+        labels:
+          app: forwarder
+      spec:
+        containers:
+          - name: forwarder-udp-ldap-computer
+            image: quay.io/ypery//forwarder_udp_ldap_computer:v0.2
+            resources:
+              limits:
+                memory: 2Gi
+                cpu: 1
+              requests:
+                cpu: 500m
+                memory: 1Gi
+            env:
+            - name: UDP_HOST
+              value: 172.30.196.25
+            - name: UDP_PORT
+              value: "4445"
+            - name: KAFKA_HOSTS
+              value: kafka-0.kafka:9092,kafka-1.kafka:9092,kafka-2.kafka:9092
