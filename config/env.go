@@ -42,6 +42,7 @@ func ReadEnv() {
 	KafkaTopic = "collector." + GetEnv(Envkafkatopic, "")
 
 	NUMOFLINESINMSG, _ = strconv.Atoi(GetEnv(EnvNUMOFLINESINMSG, "500"))
+	fmt.Printf("%d\n", NUMOFLINESINMSG)
 	LDAPBINDDN = GetEnv(EnvLDAPBINDDN, "")
 	LDAPBINDPASSWORD = GetEnv(EnvLDAPBINDPASSWORD, "")
 	LDAPBASEDN = GetEnv(EnvLDAPBASEDN, "")
@@ -53,8 +54,6 @@ func ReadEnv() {
 func GetEnv(key string, def string) string {
 
 	result := os.Getenv(key)
-	fmt.Println(key)
-	fmt.Println(result)
 	if result == "" {
 		return def
 	}
