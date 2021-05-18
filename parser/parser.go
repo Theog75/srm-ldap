@@ -58,7 +58,7 @@ func ldapReader() {
 		fmt.Println("Could not read ldap content ... retrying...")
 		return
 	}
-	fmt.Println(string(out))
+	fmt.Println(splitByEmptyNewline(string(out)))
 	for _, msg := range reduceSliceSize(splitByEmptyNewline(string(out))) {
 		kafkaproducer.ProducerHandler(msg)
 
