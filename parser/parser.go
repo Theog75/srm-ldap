@@ -40,10 +40,14 @@ func reduceSliceSize(slcs []string) []string {
 		}
 		combinedSlices += slc
 
-		if index%1000 == 0 {
+		if index+1%1000 == 0 {
 			res = append(res, combinedSlices)
 			combinedSlices = ""
 		}
+	}
+
+	if combinedSlices != "" {
+		res = append(res, combinedSlices)
 	}
 
 	return res
