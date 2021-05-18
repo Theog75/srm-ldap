@@ -2,7 +2,6 @@ package kafkaproducer
 
 import (
 	"context"
-	"os"
 	"time"
 
 	kafka "github.com/segmentio/kafka-go"
@@ -14,8 +13,10 @@ import (
 func ProducerHandler(ProduceMsg string) {
 	// get kafka writer using environment variables.
 	kafkaURL := config.KafkaURL
-	topic := os.Getenv(config.KafkaTopic)
+	topic := config.KafkaTopic
 	writer := newKafkaWriter(kafkaURL, topic)
+	fmt.Println("hosts: ", kafkaURL)
+	fmt.Println("topic: ", topic)
 	defer writer.Close()
 	fmt.Println("start producing ... !!")
 	msg := kafka.Message{
