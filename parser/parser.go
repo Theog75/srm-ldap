@@ -10,8 +10,6 @@ import (
 	"time"
 )
 
-var NUMBER_OF_LINES_PER_MSG int = config.NUMOFLINESINMSG
-
 func LdapLoop() {
 	delaystr, _ := strconv.Atoi(config.Delay)
 	delay := time.Duration(delaystr)
@@ -41,8 +39,9 @@ func reduceSliceSize(slcs []string) []string {
 			combinedSlices += "\r\n"
 		}
 		combinedSlices += slc
+		fmt.Printf("%d\n", config.NUMOFLINESINMSG)
 
-		if (index+1)%NUMBER_OF_LINES_PER_MSG == 0 {
+		if (index+1)%config.NUMOFLINESINMSG == 0 {
 			res = append(res, combinedSlices)
 			combinedSlices = ""
 		}

@@ -1,7 +1,6 @@
 package config
 
 import (
-	"fmt"
 	"os"
 	"strconv"
 	"strings"
@@ -42,7 +41,6 @@ func ReadEnv() {
 	KafkaTopic = "collector." + GetEnv(Envkafkatopic, "")
 
 	NUMOFLINESINMSG, _ = strconv.Atoi(GetEnv(EnvNUMOFLINESINMSG, "500"))
-	fmt.Printf("%d\n", NUMOFLINESINMSG)
 	LDAPBINDDN = GetEnv(EnvLDAPBINDDN, "")
 	LDAPBINDPASSWORD = GetEnv(EnvLDAPBINDPASSWORD, "")
 	LDAPBASEDN = GetEnv(EnvLDAPBASEDN, "")
