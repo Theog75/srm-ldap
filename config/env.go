@@ -1,6 +1,7 @@
 package config
 
 import (
+	"fmt"
 	"os"
 	"strconv"
 	"strings"
@@ -52,6 +53,8 @@ func ReadEnv() {
 func GetEnv(key string, def string) string {
 
 	result := os.Getenv(key)
+	fmt.Println(key)
+	fmt.Println(result)
 	if result == "" {
 		return def
 	}

@@ -40,7 +40,7 @@ items:
             value: "computer"
           - name: NUMOFLINESINMSG
             value: "500"
-          image: quay.io/ypery/collector_ldap_computer:vdev
+          image: quay.io/ypery/srm-ldap:vdev
           imagePullPolicy: Always
           name: collector-ldap-computer
           terminationMessagePath: /dev/termination-log
