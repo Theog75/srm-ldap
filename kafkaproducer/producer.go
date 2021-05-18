@@ -15,8 +15,7 @@ func ProducerHandler(ProduceMsg string) {
 	kafkaURL := config.KafkaURL
 	topic := config.KafkaTopic
 	writer := newKafkaWriter(kafkaURL, topic)
-	fmt.Println("hosts: ", kafkaURL)
-	fmt.Println("topic: ", topic)
+	fmt.Println("msg:\n", ProduceMsg)
 	defer writer.Close()
 	fmt.Println("start producing ... !!")
 	msg := kafka.Message{
