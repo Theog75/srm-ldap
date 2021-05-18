@@ -28,7 +28,7 @@ func ProducerHandler(ProduceMsg string) {
 
 func newKafkaWriter(kafkaURL []string, topic string) *kafka.Writer {
 	return &kafka.Writer{
-		Addr:     kafka.TCP(kafkaURL),
+		Addr:     kafka.TCP(kafkaURL...),
 		Topic:    config.KafkaTopic,
 		Balancer: &kafka.LeastBytes{},
 	}
