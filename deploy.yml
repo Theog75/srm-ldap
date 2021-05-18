@@ -33,11 +33,11 @@ items:
         containers:
         - env:
           - name: KAFKA_HOSTS
+            value: kafka-0.kafka:9092,kafka-1.kafka:9092,kafka-2.kafka:9092
           - name: KAFKATOPIC
             value: "ldap_computer"
           - name: OBJ-CLASS
             value: "computer"
-            value: kafka-0.kafka:9092,kafka-1.kafka:9092,kafka-2.kafka:9092
           image: quay.io/ypery/collector_ldap_computer:vdev
           imagePullPolicy: Always
           name: collector-ldap-computer
