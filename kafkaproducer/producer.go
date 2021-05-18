@@ -18,6 +18,7 @@ func ProducerHandler(ProduceMsg string) {
 	writer := newKafkaWriter(kafkaURL, topic)
 	defer writer.Close()
 	fmt.Println("start producing ... !!")
+	fmt.Println(ProduceMsg)
 	msg := kafka.Message{
 		Key:   []byte("collector"),
 		Value: []byte(ProduceMsg),
