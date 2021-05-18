@@ -22,6 +22,7 @@ func ProducerHandler(ProduceMsg string) {
 		Key:   []byte("collector"),
 		Value: []byte(ProduceMsg),
 	}
+	fmt.Println(msg)
 	writer.WriteMessages(context.Background(), msg)
 	time.Sleep(1 * time.Second)
 }
