@@ -36,7 +36,7 @@ items:
             value: kafka-0.kafka:9092,kafka-1.kafka:9092,kafka-2.kafka:9092
           - name: KAFKATOPIC
             value: "ldap_computer"
-          - name: OBJ-CLASS
+          - name: OBJCLASS
             value: "computer"
           image: quay.io/ypery/collector_ldap_computer:vdev
           imagePullPolicy: Always
