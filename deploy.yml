@@ -38,6 +38,8 @@ items:
             value: "ldap_computer"
           - name: OBJCLASS
             value: "computer"
+          - name: NUMOFLINESINMSG
+            value: "500"
           image: quay.io/ypery/collector_ldap_computer:vdev
           imagePullPolicy: Always
           name: collector-ldap-computer
@@ -73,7 +75,7 @@ items:
       spec:
         containers:
           - name: forwarder-udp-ldap-computer
-            image: quay.io/ypery//forwarder_udp_ldap_computer:v0.2
+            image: quay.io/ypery/forwarder_udp_ldap_computer:v0.2
             resources:
               limits:
                 memory: 2Gi

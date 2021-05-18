@@ -2,6 +2,7 @@ package config
 
 import (
 	"os"
+	"strconv"
 	"strings"
 )
 
@@ -11,6 +12,7 @@ const (
 	EnvkafkaURL   = "KAFKA_HOSTS"
 	Envkafkatopic = "KAFKATOPIC"
 
+	EnvNUMOFLINESINMSG  = "NUMOFLINESINMSG"
 	EnvLDAPBINDDN       = "LDAPBINDDN"
 	EnvLDAPBINDPASSWORD = "LDAPBINDPASSWORD"
 	EnvLDAPBASEDN       = "LDAPBASEDN"
@@ -24,6 +26,7 @@ var (
 	KafkaURL   = ""
 	KafkaTopic = ""
 
+	NUMOFLINESINMSG  = 0
 	LDAPBINDDN       = ""
 	LDAPBINDPASSWORD = ""
 	LDAPBASEDN       = ""
@@ -37,6 +40,7 @@ func ReadEnv() {
 	KafkaURL = GetEnv(EnvkafkaURL, "kafka-0.kafka")
 	KafkaTopic = "collector." + GetEnv(Envkafkatopic, "")
 
+	NUMOFLINESINMSG, _ = strconv.Atoi(GetEnv(EnvNUMOFLINESINMSG, "500"))
 	LDAPBINDDN = GetEnv(EnvLDAPBINDDN, "")
 	LDAPBINDPASSWORD = GetEnv(EnvLDAPBINDPASSWORD, "")
 	LDAPBASEDN = GetEnv(EnvLDAPBASEDN, "")

@@ -10,7 +10,7 @@ import (
 	"time"
 )
 
-const NUMBER_OF_LINES_PER_MSG = 2
+var NUMBER_OF_LINES_PER_MSG int = config.NUMOFLINESINMSG
 
 func LdapLoop() {
 	delaystr, _ := strconv.Atoi(config.Delay)
