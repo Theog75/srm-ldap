@@ -10,6 +10,8 @@ import (
 	"time"
 )
 
+const NUMBER_OF_LINES_PER_MSG = 500
+
 func LdapLoop() {
 	delaystr, _ := strconv.Atoi(config.Delay)
 	delay := time.Duration(delaystr)
@@ -36,11 +38,11 @@ func reduceSliceSize(slcs []string) []string {
 
 	for index, slc := range slcs {
 		if combinedSlices != "" {
-			combinedSlices += "\r\n\r\n"
+			combinedSlices += "\r\n"
 		}
 		combinedSlices += slc
 
-		if index+1%1000 == 0 {
+		if (index + 1%NUMBER_OF_LINES_PER_MSG) == 0 {
 			res = append(res, combinedSlices)
 			combinedSlices = ""
 		}
