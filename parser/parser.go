@@ -10,7 +10,7 @@ import (
 	"time"
 )
 
-const NUMBER_OF_LINES_PER_MSG = 500
+const NUMBER_OF_LINES_PER_MSG = 2
 
 func LdapLoop() {
 	delaystr, _ := strconv.Atoi(config.Delay)
@@ -27,7 +27,7 @@ func splitByEmptyNewline(str string) []string {
 		ReplaceAllString(str, "\n")
 
 	return regexp.
-		MustCompile(`\n\s*\n`).
+		MustCompile(`\s*\n`).
 		Split(strNormalized, -1)
 
 }
@@ -42,7 +42,7 @@ func reduceSliceSize(slcs []string) []string {
 		}
 		combinedSlices += slc
 
-		if (index + 1%NUMBER_OF_LINES_PER_MSG) == 0 {
+		if (index+1)%NUMBER_OF_LINES_PER_MSG == 0 {
 			res = append(res, combinedSlices)
 			combinedSlices = ""
 		}
