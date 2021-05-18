@@ -39,8 +39,6 @@ func reduceSliceSize(slcs []string) []string {
 			combinedSlices += "\r\n"
 		}
 		combinedSlices += slc
-		fmt.Printf("%d\n", config.NUMOFLINESINMSG)
-
 		if (index+1)%config.NUMOFLINESINMSG == 0 {
 			res = append(res, combinedSlices)
 			combinedSlices = ""
