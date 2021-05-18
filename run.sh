@@ -1,3 +1,4 @@
+#!/bin/bash
 export LDAPBINDDN=$(cat /ldapauth/binddn)
 export LDAPBINDPASSWORD=$(cat /ldapauth/password)
 export LDAPBASEDN=$(cat /ldapauth/basedn)
